@@ -16,8 +16,7 @@ class UserObjectPermissionManager(models.Manager):
                 % obj)
         ctype = ContentType.objects.get_for_model(obj)
         permission = Permission.objects.get(
-            content_type=ctype, codename=perm)
-
+            content_type__name=ctype.name, codename=perm)
         obj_perm, created = self.get_or_create(
             content_type = ctype,
             permission = permission,
@@ -62,7 +61,7 @@ class GroupObjectPermissionManager(models.Manager):
                 % obj)
         ctype = ContentType.objects.get_for_model(obj)
         permission = Permission.objects.get(
-            content_type=ctype, codename=perm)
+            content_type__name=ctype.name, codename=perm)
 
         obj_perm, created = self.get_or_create(
             content_type = ctype,
