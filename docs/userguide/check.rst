@@ -24,10 +24,13 @@ additional argument::
 
 Lets assign permission and check again::
 
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
+    >>> joe = User.objects.get(username='joe')
+    >>>
     >>> from guardian.shortcuts import assign
     >>> assign('sites.change_site', joe, site)
     <UserObjectPermission: example.com | joe | change_site>
-    >>> joe = User.objects.get(username='joe')
     >>> joe.has_perm('sites.change_site', site)
     True
 
@@ -46,11 +49,12 @@ get_perms
 
 To check permissions we can use quick-and-dirty shortcut::
 
-    >>> from guardian.shortcuts import get_perms
-    >>>
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
     >>> joe = User.objects.get(username='joe')
     >>> site = Site.objects.get_current()
     >>>
+    >>> from guardian.shortcuts import get_perms
     >>> 'change_site' in get_perms(joe, site)
     True
 
@@ -100,8 +104,11 @@ codes where we check permissions more than once.
 
 Let's see it in action::
 
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
     >>> joe = User.objects.get(username='joe')
     >>> site = Site.objects.get_current()
+    >>>
     >>> from guardian.core import ObjectPermissionChecker
     >>> checker = ObjectPermissionChecker(joe) # we can pass user or group
     >>> checker.has_perm('change_site', site)
@@ -126,6 +133,8 @@ returns form to edit the group. Moreover, we want to return 403 code if check
 fails. This can be simply achieved using ``permission_required_or_403``
 decorator::
 
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
     >>> joe = User.objects.get(username='joe')
     >>> foobars = Group.objects.create(name='foobars')
     >>>

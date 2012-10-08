@@ -6,10 +6,13 @@
 
 """
 from django import template
-from django.contrib.auth.models import User, Group, AnonymousUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, AnonymousUser
 
 from guardian.exceptions import NotUserNorGroup
 from guardian.core import ObjectPermissionChecker
+
+User = get_user_model()
 
 register = template.Library()
 
@@ -34,7 +37,6 @@ class ObjectPermissionsNode(template.Node):
             raise NotUserNorGroup("User or Group instance required (got %s)"
                 % for_whom.__class__)
         obj = self.obj.resolve(context)
-
         check = ObjectPermissionChecker(for_whom)
         perms = check.get_perms(obj)
 

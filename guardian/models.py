@@ -1,6 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
@@ -8,6 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 from guardian.managers import UserObjectPermissionManager
 from guardian.managers import GroupObjectPermissionManager
 from guardian.utils import get_anonymous_user
+
+
+User = get_user_model()
 
 class BaseObjectPermission(models.Model):
     """
@@ -35,6 +39,7 @@ class BaseObjectPermission(models.Model):
                 % (self.permission.content_type, self.content_type))
         return super(BaseObjectPermission, self).save(*args, **kwargs)
 
+
 class UserObjectPermission(BaseObjectPermission):
     """
     **Manager**: :manager:`UserObjectPermissionManager`
@@ -45,6 +50,7 @@ class UserObjectPermission(BaseObjectPermission):
 
     class Meta:
         unique_together = ['user', 'permission', 'content_type', 'object_pk']
+
 
 class GroupObjectPermission(BaseObjectPermission):
     """

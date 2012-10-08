@@ -1,7 +1,8 @@
 """
 Convenient shortcuts to manage or check object permissions.
 """
-from django.contrib.auth.models import Permission, User, Group
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
@@ -12,6 +13,10 @@ from guardian.exceptions import WrongAppError
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.utils import get_identity
 from itertools import groupby
+
+
+User = get_user_model()
+
 
 def assign(perm, user_or_group, obj=None):
     """
@@ -31,7 +36,9 @@ def assign(perm, user_or_group, obj=None):
     We can assign permission for ``Model`` instance for specific user:
 
     >>> from django.contrib.sites.models import Site
-    >>> from django.contrib.auth.models import User, Group
+    >>> from django.contrib.auth import get_user_model
+    >>> from django.contrib.auth.models import Group
+    >>> User = get_user_model()
     >>> from guardian.shortcuts import assign
     >>> site = Site.objects.get_current()
     >>> user = User.objects.create(username='joe')
@@ -161,12 +168,13 @@ def get_users_with_perms(obj, attach_perms=False, with_superusers=False,
 
     Example::
 
-        >>> from django.contrib.auth.models import User
+        >>> from django.contrib.auth import get_user_model
         >>> from django.contrib.flatpages.models import FlatPage
         >>> from guardian.shortcuts import assign, get_users_with_perms
         >>>
-        >>> page = FlatPage.objects.create(title='Some page', path='/some/page/')
+        >>> User = get_user_model()
         >>> joe = User.objects.create_user('joe', 'joe@example.com', 'joesecret')
+        >>> page = FlatPage.objects.create(title='Some page', path='/some/page/')
         >>> assign('change_flatpage', joe, page)
         >>>
         >>> get_users_with_perms(page)

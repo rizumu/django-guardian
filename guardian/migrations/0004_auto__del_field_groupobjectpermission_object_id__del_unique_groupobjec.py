@@ -2,6 +2,7 @@
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
+from django.conf import settings
 from django.db import models
 
 class Migration(SchemaMigration):
@@ -113,7 +114,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'object_pk': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'permission': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.Permission']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['{0}']".format(settings.AUTH_USER_MODEL)})
         }
     }
 

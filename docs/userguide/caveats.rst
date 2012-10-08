@@ -42,13 +42,15 @@ be removed. In this case, it would be very easy to remove user/group object
 permissions if we connect proper action with proper signal. This could be
 achieved by following snippet::
 
-    from django.contrib.auth.models import User
+    from django.contrib.auth import get_user_model
     from django.contrib.contenttypes.models import ContentType
     from django.db.models import Q
     from django.db.models.signals import pre_delete
     from guardian.models import UserObjectPermission
     from guardian.models import GroupObjectPermission
 
+
+    User = get_user_model()
 
     def remove_obj_perms_connected_with_user(sender, instance, **kwargs):
         filters = Q(content_type=ContentType.objects.get_for_model(instance),

@@ -1,7 +1,11 @@
 from django.db.models import signals
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from guardian import models as guardian_app
 from guardian.conf import settings as guardian_settings
+
+
+User = get_user_model()
+
 
 def create_anonymous_user(sender, **kwargs):
     """

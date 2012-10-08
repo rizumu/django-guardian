@@ -6,7 +6,7 @@ django-guardian
   :target: http://travis-ci.org/lukaszb/django-guardian
 
 
-``django-guardian`` is implementation of per object permissions [1]_ as 
+``django-guardian`` is implementation of per object permissions [1]_ as
 authorization backend which is supported since Django_ 1.2. It won't
 work with older Django_ releases.
 
@@ -28,14 +28,14 @@ We need to hook ``django-guardian`` into our project.
          ...
          'guardian',
       )
-   
+
 2. Add extra authorization backend::
 
       AUTHENTICATION_BACKENDS = (
           'django.contrib.auth.backends.ModelBackend', # default
           'guardian.backends.ObjectPermissionBackend',
       )
-         
+
 Usage
 -----
 
@@ -44,6 +44,8 @@ with Django_.
 
 Lets start really quickly::
 
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
     >>> jack = User.objects.create_user('jack', 'jack@example.com', 'topsecretagentjack')
     >>> admins = Group.objects.create(name='admins')
     >>> jack.has_perm('change_group', admins)
@@ -87,7 +89,7 @@ There is an online documentation available at
 http://packages.python.org/django-guardian/.
 
 
-.. [1] Great paper about this feature is available at 
+.. [1] Great paper about this feature is available at
    http://djangoadvent.com/1.2/object-permissions/.
 
 .. _Django: http://www.djangoproject.org/

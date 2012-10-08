@@ -35,6 +35,10 @@ def permission_required(perm, lookup_variables=None, **kwargs):
 
     Examples::
 
+
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+
         @permission_required('auth.change_user', return_403=True)
         def my_view(request):
             return HttpResponse('Hello')

@@ -1,15 +1,21 @@
 from django.test import TestCase
-from django.contrib.auth.models import User, Group, AnonymousUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, AnonymousUser
 
 from guardian.tests.core_test import ObjectPermissionTestCase
 from guardian.utils import get_anonymous_user, get_identity
 from guardian.exceptions import NotUserNorGroup
+
+
+User = get_user_model()
+
 
 class GetAnonymousUserTest(TestCase):
 
     def test(self):
         anon = get_anonymous_user()
         self.assertTrue(isinstance(anon, User))
+
 
 class GetIdentityTest(ObjectPermissionTestCase):
 

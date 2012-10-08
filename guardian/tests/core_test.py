@@ -3,7 +3,8 @@ from itertools import chain
 from django.conf import settings
 from django.contrib.auth import models as auth_app
 from django.contrib.auth.management import create_permissions
-from django.contrib.auth.models import User, Group, Permission, AnonymousUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission, AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 
@@ -11,6 +12,10 @@ from guardian.core import ObjectPermissionChecker
 from guardian.exceptions import NotUserNorGroup
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.shortcuts import assign
+
+
+User = get_user_model()
+
 
 class ObjectPermissionTestCase(TestCase):
 

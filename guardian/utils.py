@@ -9,7 +9,8 @@ import os
 import logging
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.models import User, AnonymousUser, Group
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser, Group
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -19,9 +20,9 @@ from guardian.conf import settings as guardian_settings
 from guardian.exceptions import NotUserNorGroup
 from itertools import chain
 
+
+User = get_user_model()
 logger = logging.getLogger(__name__)
-
-
 abspath = lambda *p: os.path.abspath(os.path.join(*p))
 
 
@@ -46,6 +47,8 @@ def get_identity(identity):
 
     **Examples**::
 
+       >>> from django.contrib.auth import get_user_model
+       >>> User = get_user_model()
        >>> user = User.objects.create(username='joe')
        >>> get_identity(user)
        (<User: joe>, None)

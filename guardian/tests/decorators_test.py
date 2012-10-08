@@ -1,6 +1,7 @@
 import mock
 from django.conf import settings
-from django.contrib.auth.models import User, Group, AnonymousUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -14,6 +15,9 @@ from guardian.exceptions import GuardianError
 from guardian.shortcuts import assign
 from guardian.tests.conf import TEST_SETTINGS
 from guardian.tests.conf import override_settings
+
+
+User = get_user_model()
 
 @override_settings(**TEST_SETTINGS)
 class PermissionRequiredTest(TestCase):
@@ -187,9 +191,8 @@ class PermissionRequiredTest(TestCase):
         assign(perm, self.user, obj=joe)
 
         request = self._get_request(self.user)
-
         @permission_required_or_403(perm, (
-            'auth.User', 'username', 'username'))
+            settings.AUTH_USER_MODEL, 'username', 'username'))
         def dummy_view(request, username):
             return HttpResponse('dummy_view')
         response = dummy_view(request, username='joe')
@@ -205,7 +208,7 @@ class PermissionRequiredTest(TestCase):
         request = self._get_request(self.user)
 
         @permission_required_or_403(perm, (
-            'auth.User', 'username', 'username'), accept_global_perms=True)
+            settings.AUTH_USER_MODEL, 'username', 'username'), accept_global_perms=True)
         def dummy_view(request, username):
             return HttpResponse('dummy_view')
         response = dummy_view(request, username='joe')
@@ -220,7 +223,7 @@ class PermissionRequiredTest(TestCase):
         request = self._get_request(self.user)
 
         @permission_required_or_403(perm, (
-            'auth.User', 'username', 'username'))
+            settings.AUTH_USER_MODEL, 'username', 'username'))
         def dummy_view(request, username):
             return HttpResponse('dummy_view')
         response = dummy_view(request, username='joe')
@@ -235,7 +238,7 @@ class PermissionRequiredTest(TestCase):
         request = self._get_request(self.user)
 
         @permission_required_or_403(perm, (
-            'auth.User', 'username', 'username'))
+            settings.AUTH_USER_MODEL, 'username', 'username'))
         def dummy_view(request, username):
             return HttpResponse('dummy_view')
         response = dummy_view(request, username='joe')
@@ -250,7 +253,7 @@ class PermissionRequiredTest(TestCase):
         request = self._get_request(self.user)
 
         @permission_required_or_403(perm, (
-            'auth.User', 'username', 'username'), accept_global_perms=True)
+            settings.AUTH_USER_MODEL, 'username', 'username'), accept_global_perms=True)
         def dummy_view(request, username):
             return HttpResponse('dummy_view')
         response = dummy_view(request, username='joe')
@@ -266,7 +269,7 @@ class PermissionRequiredTest(TestCase):
         assign(perm, self.user, obj=joe)
 
         models = (
-            'auth.User',
+            settings.AUTH_USER_MODEL,
             User,
             User.objects.filter(is_active=True),
         )

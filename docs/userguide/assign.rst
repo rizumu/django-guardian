@@ -16,7 +16,7 @@ Let's assume we have following model:
     class Task(models.Model):
         summary = models.CharField(max_length=32)
         content = models.TextField()
-        reported_by = models.ForeignKey(User)
+        reported_by = models.ForeignKey(settings.AUTH_USER_MODEL)
         created_at = models.DateTimeField(auto_now_add=True)
 
 ... and we want to be able to set custom permission *view_task*. We let know
@@ -28,7 +28,7 @@ model could look like:
     class Task(models.Model):
         summary = models.CharField(max_length=32)
         content = models.TextField()
-        reported_by = models.ForeignKey(User)
+        reported_by = models.ForeignKey(settings.AUTH_USER_MODEL)
         created_at = models.DateTimeField(auto_now_add=True)
 
         class Meta:
@@ -69,6 +69,8 @@ Continuing our example we now can allow Joe user to view some task:
 
 .. code-block:: python
 
+    >>> from django.contrib.auth import get_user_model
+    >>> User = get_user_model()
     >>> boss = User.objects.create(username='Big Boss')
     >>> joe = User.objects.create(username='joe')
     >>> task = Task.objects.create(summary='Some job', content='', reported_by=boss)
