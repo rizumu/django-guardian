@@ -72,7 +72,7 @@ class ObjectPermissionChecker(object):
                             userobjectpermission__user=self.user,
                             userobjectpermission__object_pk=obj.pk) |
                         Q(groupobjectpermission__content_type=F('content_type'),
-                            groupobjectpermission__group__user=self.user,
+                            groupobjectpermission__group__customuser=self.user,
                             groupobjectpermission__object_pk=obj.pk))
                     .values_list("codename"))))
             else:
